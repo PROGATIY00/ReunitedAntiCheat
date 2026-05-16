@@ -1,0 +1,334 @@
+# ─── Join Intelligence Alerts Configuration ───
+# Detects client information, mods, and suspicious activity on player join.
+
+# ─── General Settings ───
+settings:
+  # Alert staff when a player joins
+  alert-on-join: true
+  # Log join data to database
+  database-logging: true
+  # Check for updates on startup
+  check-updates: true
+
+# ─── Client Detection ───
+client-detection:
+  # Detect Minecraft version from protocol
+  detect-version: true
+  # Detect client brand (Fabric, Forge, NeoForge, Vanilla, etc.)
+  detect-brand: true
+  # Track mod count via Fabric/Forge handshake
+  track-mod-count: true
+  # Scan mod names for suspicious keywords
+  scan-mods: true
+
+# ─── Alert Settings ───
+alerts:
+  enabled: true
+  # Send notification when player joins (shows version + client + mod count)
+  join-notification: true
+  # Send warning if suspicious mods are detected
+  suspicious-mod-warning: true
+  # Send warning if a known cheat client brand is detected
+  cheat-client-warning: true
+  # Send alert for high mod counts (configure threshold below)
+  high-mod-count-warning: true
+  high-mod-count-threshold: 100
+
+# ─── Staff Alert Format ───
+staff-alert:
+  prefix: "&8[&bJoinIntelligence&8]"
+  join-format: "&e%player% &7joined using &b%version% &f%client% &7with &e%mod_count% &7mods"
+  client-brand-format: "&7Client: &f%brand%"
+  suspicious-format: "&c⚠ &e%player% &7has suspicious mods: &c%mods%"
+  cheat-format: "&4⚠ &e%player% &7may be using: &4%client%"
+  high-mod-count-format: "&6⚠ &e%player% &7has &6%mod_count% &7mods"
+  hover:
+    enabled: true
+    join-hover: "&7IP: &f%ip%\n&7Version: &f%version%\n&7Client: &f%client%\n&7Mods: &f%mod_count%\n&7UUID: &f%uuid%"
+    suspicious-hover: "&7Suspicious mods: &c%mods%\n&7Click to teleport"
+  click:
+    enabled: true
+    # Commands that run when clicking the alert
+    teleport-command: "/tp %player%"
+    inspect-command: "/inventory %player%"
+
+# ─── Discord Webhook ───
+discord:
+  enabled: false
+  webhook-url: "YOUR_WEBHOOK_URL_HERE"
+  # Available placeholders: %player%, %uuid%, %ip%, %version%, %client%, %brand%, %mod_count%, %mods%, %suspicious_mods%
+  join-message:
+    enabled: true
+    title: "Player Joined"
+    description: "**%player%** joined the server"
+    color: 65280 # Green
+    fields:
+      - name: "Version"
+        value: "%version%"
+        inline: true
+      - name: "Client"
+        value: "%client%"
+        inline: true
+      - name: "Mod Count"
+        value: "%mod_count%"
+        inline: true
+      - name: "Brand"
+        value: "%brand%"
+        inline: true
+      - name: "IP Address"
+        value: "%ip%"
+        inline: false
+  suspicious-message:
+    enabled: true
+    title: "Suspicious Mods Detected"
+    description: "**%player%** has suspicious mods"
+    color: 16711680 # Red
+    fields:
+      - name: "Suspicious Mods"
+        value: "%suspicious_mods%"
+        inline: false
+      - name: "Total Mod Count"
+        value: "%mod_count%"
+        inline: true
+      - name: "Version"
+        value: "%version%"
+        inline: true
+
+# ─── Ignore List ───
+# Mods in this list will not be flagged as suspicious
+ignore-mods:
+  - "sodium"
+  - "sodium-extra"
+  - "optifine"
+  - "fabric-api"
+  - "fabric-loader"
+  - "fabric"
+  - "lithium"
+  - "phosphor"
+  - "iris"
+  - "reeses-sodium-options"
+  - "modmenu"
+  - "cloth-config"
+  - "indium"
+  - "continuity"
+  - "entityculling"
+  - "lambdabettergrass"
+  - "lambdynlights"
+  - "dynamic-fps"
+  - "c2me"
+  - "ferritecore"
+  - "krypton"
+  - "lazydfu"
+  - "smoothboot"
+  - "memoryleakfix"
+  - "modernfix"
+  - "starlight"
+  - "canvas"
+  - "minecraft"
+  - "java"
+  - "neoforge"
+  - "forge"
+
+# ─── Suspicious Mod Keywords ───
+# Mod names containing these keywords (case-insensitive) will trigger warnings
+suspicious-keywords:
+  - "wurst"
+  - "aristois"
+  - "impact"
+  - "future"
+  - "lambda"
+  - "inertia"
+  - "meteor"
+  - "liquidbounce"
+  - "sigma"
+  - "intent"
+  - "novoline"
+  - "vape"
+  - "raven"
+  - "reach"
+  - "aimassist"
+  - "autoclicker"
+  - "killaura"
+  - "freecam"
+  - "esp"
+  - "wallhack"
+  - "xray"
+  - "x-ray"
+  - "triggerbot"
+  - "antibot"
+  - "bhop"
+  - "speedmine"
+  - "nuker"
+  - "baritone"
+  - "crystalpvp"
+  - "autototem"
+  - "autocrystal"
+  - "surround"
+  - "strafe"
+  - "velocity"
+  - "scaffold"
+  - "tower"
+  - "fly"
+  - "jetpack"
+  - "longjump"
+  - "antivoid"
+  - "backtrack"
+  - "blink"
+  - "phase"
+  - "spinbot"
+  - "teleport"
+  - "timer"
+  - "cheat"
+  - "hack"
+  - "client"
+
+# ─── Cheat Client Brand Detection ───
+# Detect known cheat clients by their brand/channel identifiers
+cheat-brands:
+  - "LiquidBounce"
+  - "NeverHook"
+  - "Wurst"
+  - "Aristois"
+  - "Impact"
+  - "Meteor"
+  - "Future"
+  - "Inertia"
+  - "Lambda"
+  - "Sigma"
+  - "Novoline"
+  - "Vape"
+  - "Raven"
+  - "Moonlight"
+  - "Rise"
+  - "Exhibition"
+  - "NightX"
+  - "Flux"
+  - "RektSky"
+  - "Whiteout"
+  - "ZeroDay"
+  - "Spicy"
+  - "Remix"
+  - "Sensation"
+
+# ─── Database Settings ───
+database:
+  # Supported: H2 (embedded)
+  type: H2
+  h2:
+    file: "plugins/JoinIntelligence/data"
+    table: "join_logs"
+    # Auto-create table on startup
+    auto-create: true
+  # Retention in days (0 = keep forever)
+  retention-days: 90
+  # Auto-flag threshold (detections before appearing in /sus flagged)
+  auto-flag-threshold: 3
+
+# ─── Detection Severity Levels ───
+# Used for staff alerts, punishments, Discord logging, and GUI coloring
+# Each category defines its own urgency, colors, and alert behavior
+detection-severity:
+  cheating:
+    urgency: MEDIUM
+    color: YELLOW
+    prefix: "&6[MEDIUM]"
+    staff-alert: true
+    auto-log: true
+    discord-webhook: true
+  duping:
+    urgency: HIGH
+    color: RED
+    prefix: "&4[HIGH]"
+    staff-alert: true
+    auto-log: true
+    discord-webhook: true
+  xray:
+    urgency: LOW
+    color: GREEN
+    prefix: "&a[LOW]"
+    staff-alert: true
+    auto-log: true
+    discord-webhook: false
+  macroing:
+    urgency: MEDIUM
+    color: GOLD
+    prefix: "&6[MEDIUM]"
+    staff-alert: true
+    auto-log: true
+    discord-webhook: true
+  freecam:
+    urgency: MEDIUM
+    color: YELLOW
+    prefix: "&6[MEDIUM]"
+    staff-alert: true
+    auto-log: true
+    discord-webhook: true
+  fly:
+    urgency: HIGH
+    color: RED
+    prefix: "&4[HIGH]"
+    staff-alert: true
+    auto-log: true
+    discord-webhook: true
+  speed:
+    urgency: LOW
+    color: GREEN
+    prefix: "&a[LOW]"
+    staff-alert: true
+    auto-log: true
+    discord-webhook: false
+  killaura:
+    urgency: HIGH
+    color: RED
+    prefix: "&4[HIGH]"
+    staff-alert: true
+    auto-log: true
+    discord-webhook: true
+  scaffold:
+    urgency: MEDIUM
+    color: YELLOW
+    prefix: "&6[MEDIUM]"
+    staff-alert: true
+    auto-log: true
+    discord-webhook: true
+  nuker:
+    urgency: HIGH
+    color: RED
+    prefix: "&4[HIGH]"
+    staff-alert: true
+    auto-log: true
+    discord-webhook: true
+  suspect:
+    urgency: LOW
+    color: AQUA
+    prefix: "&b[SUSPECT]"
+    staff-alert: true
+    auto-log: true
+    discord-webhook: true
+
+# Example Outputs:
+#   [HIGH] Steve detected for Duping
+#   [MEDIUM] Alex detected for Cheating
+#   [LOW] Bob suspicious X-Ray activity
+#   [SUSPECT] /sus command manual flag
+
+# ─── Flight Check Configuration ───
+flight-check:
+  enabled: true
+  # Max allowed airtime difference from expected physics (in server ticks)
+  max-airtime-ticks: 40
+  # Ping threshold for high-ping handling (ms)
+  high-ping-threshold: 400
+  urgency: HIGH
+  high-ping-handling:
+    enabled: true
+    urgency: LOW
+    kick-player: true
+    setback-player: false
+    kick-message: "&cUnstable connection detected. Please reconnect."
+  setback:
+    enabled: true
+  alerts:
+    enabled: true
+  vl:
+    amount: 10

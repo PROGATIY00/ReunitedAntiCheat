@@ -1,0 +1,32 @@
+name: JoinIntelligence
+version: 1.0.0
+main: com.reunitedanticheat.joinintelligence.JoinIntelligencePlugin
+api-version: 1.21
+depend: [ProtocolLib]
+softdepend: [PacketEvents]
+author: ReunitedAntiCheat
+description: Join Intelligence Alerts - detects client info, mods, and suspicious activity on player join
+
+commands:
+  joinintelligence:
+    description: JoinIntelligence main command
+    usage: /<command> [reload]
+    aliases: [ji]
+    permission: joinintelligence.alerts
+  sus:
+    description: Flag or check a player for suspicious activity
+    usage: /<command> <player> [category] [details]
+    aliases: [suspect, flag]
+    permission: joinintelligence.alerts
+  rac:
+    description: Reunited Anti-Cheat debug command
+    usage: /<command> debug flight <player>
+    permission: joinintelligence.alerts
+
+permissions:
+  joinintelligence.alerts:
+    description: Receive join intelligence alerts and use /sus
+    default: op
+  joinintelligence.reload:
+    description: Reload JoinIntelligence configuration
+    default: op
